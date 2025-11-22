@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-// @ts-expect-error: No types; ensure types if available
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken"); // Use CommonJS require to avoid type declaration error
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
