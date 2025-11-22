@@ -1,11 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import dbConnect from "@/lib/db";
 import Product, { IProduct } from "@/model/Product";
 
-export async function DELETE(req: Request, context: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     await dbConnect();
-    const { id } = context.params;
+    const params = await context.params;
+    const { id } = params;
 
     const deletedProduct = await Product.findByIdAndDelete(id);
 
@@ -23,10 +24,11 @@ export async function DELETE(req: Request, context: { params: { id: string } }) 
   }
 }
 
-export async function GET(req: Request, context: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     await dbConnect();
-    const { id } = context.params;
+    const params = await context.params;
+    const { id } = params;
 
     const product = await Product.findById(id);
 
@@ -44,11 +46,12 @@ export async function GET(req: Request, context: { params: { id: string } }) {
   }
 }
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     await dbConnect();
-    const { id } = context.params;
-    const body = await req.json();
+    const params = await context.params;
+    const { id } = params;
+    const body = await request.json();
 
     const updatedProduct = await Product.findByIdAndUpdate(id, body, { new: true, runValidators: true });
 

@@ -1,6 +1,6 @@
 'use client'; // Add this directive if not already present
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Navbar from "@/components/Navbar";
 import { useSearchParams } from 'next/navigation';
@@ -16,6 +16,14 @@ interface Product {
 }
 
 export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
