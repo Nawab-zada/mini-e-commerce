@@ -67,8 +67,15 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     await dbConnect();
-    const { searchParams } = new URL(req.url);
-    const name = searchParams.get('name');
+    
+    let name: string | null = null;
+    try {
+      const { searchParams } = new URL(req.url);
+      name = searchParams.get('name');
+    } catch (urlError: any) {
+      console.error("Error parsing URL or searchParams in GET /api/products:", urlError);
+      // Continue without search term if URL parsing fails
+    }
 
     let query: any = {};
     if (name) {
