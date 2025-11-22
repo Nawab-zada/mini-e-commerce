@@ -15,7 +15,6 @@ try {
 export async function POST(req: Request) {
   try {
     await dbConnect();
-    await dbConnect();
 
     const { email, password } = await req.json();
 
